@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Boxes,
   LayoutDashboard,
   Package,
   RefreshCw,
@@ -38,18 +37,6 @@ export function Sidebar({
 }: Props) {
   return (
     <aside className="flex h-full w-[248px] shrink-0 flex-col border-r border-border bg-sidebar dark:border-white/[0.06]">
-      <div className="border-b border-border px-5 py-5 dark:border-white/[0.06]">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-accent-foreground shadow-sm dark:bg-[#2a2a2a] dark:text-[#ededed]">
-            <Boxes size={18} />
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Keystone</p>
-            <p className="text-[11px] text-muted-foreground">Inventory CRM</p>
-          </div>
-        </div>
-      </div>
-
       <div className="px-3 py-4">
         <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
           Workspace

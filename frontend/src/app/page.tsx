@@ -20,7 +20,6 @@ import {
   saveSessionCheckouts,
 } from '@/lib/checkout-session';
 import { seedDemoData } from '@/lib/seed';
-import { Bell, Search } from 'lucide-react';
 
 type View = 'pipeline' | 'inventory';
 
@@ -220,18 +219,7 @@ export default function Home() {
               </h1>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="hidden items-center gap-2 rounded-xl border border-border bg-input px-3 py-2 text-sm text-muted-foreground md:flex dark:border-transparent dark:bg-[#1a1a1a]">
-                <Search size={15} />
-                <span className="font-mono text-xs">
-                  {process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5566'}
-                </span>
-              </div>
-              <button className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-input text-muted-foreground shadow-sm hover:bg-muted dark:border-transparent dark:bg-[#1a1a1a] dark:hover:bg-[#222222]">
-                <Bell size={16} />
-              </button>
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </div>
         </header>
 

@@ -5,6 +5,13 @@ Web track assignment. Backend-first inventory reservation service.
 **Live API:** `https://keystone-jh8u.onrender.com`  
 **Live UI:** `https://keystone-sigma-blue.vercel.app`
 
+## Deployment
+
+- **Backend API** is hosted on [Render](https://render.com) (Docker + Postgres).
+- **Frontend UI** is hosted on [Vercel](https://vercel.com).
+
+> **Cold start note:** The API runs on Render's free tier. After ~15 minutes of inactivity, the service spins down. The first request after that can take **30–60 seconds** to respond while the container wakes up. Subsequent requests are fast until the next idle period.
+
 ## Quick start (local)
 
 ```bash
