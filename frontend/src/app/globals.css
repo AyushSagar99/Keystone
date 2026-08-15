@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-muted: var(--accent-muted);
+  --color-input: var(--input);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Light — warm cream */
+:root {
+  --background: #f3ece0;
+  --foreground: #2a2520;
+  --card: #fffaf3;
+  --card-foreground: #2a2520;
+  --muted: #e8dfd2;
+  --muted-foreground: #7a6f63;
+  --border: #ddd2c3;
+  --primary: #3d4f7c;
+  --primary-foreground: #ffffff;
+  --secondary: #ebe2d4;
+  --secondary-foreground: #4a433c;
+  --sidebar: #f8f2e8;
+  --accent: #4a63a8;
+  --accent-foreground: #ffffff;
+  --accent-muted: #e4ebf8;
+  --input: #fffdf8;
+}
+
+/* Dark — layered surfaces, barely-there borders */
+.dark {
+  --background: #121212;
+  --foreground: #ededed;
+  --card: #1a1a1a;
+  --card-foreground: #ededed;
+  --muted: #161616;
+  --muted-foreground: #9a9a9a;
+  --border: #262626;
+  --primary: #ededed;
+  --primary-foreground: #121212;
+  --secondary: #222222;
+  --secondary-foreground: #d4d4d4;
+  --sidebar: #121212;
+  --accent: #d4d4d4;
+  --accent-foreground: #121212;
+  --accent-muted: #252525;
+  --input: #1e1e1e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}

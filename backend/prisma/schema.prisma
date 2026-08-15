@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id         String      @id @default(uuid())
+  name       String
+  sku        String      @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  inventory  Inventory[]
+  checkouts  Checkout[]
+}
+
+model Location {
+  id            String   @id @default(uuid())
+  name          String
+  city          String
+  state         String
+  priority      Int      @default(100)
+  active        Boolean  @default(true)
+  serviceZones  String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  inventory     Inventory[]
+  checkouts     Checkout[]
+
+  @@index([active, city, state])
+}
+
+model Inventory {
+  id         String   @id @default(uuid())
+  productId  String
+  locationId String
+  stock      Int      @default(0)
+  reserved   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, locationId])
+  @@index([productId])
+  @@index([locationId])
+}
+
+enum CheckoutStatus {
+  RESERVED
+  PAID
+  FAILED
+  USER_DROPPED
+  EXPIRED
+}
+
+model Checkout {
+  id              String         @id @default(uuid())
+  productId       String
+  locationId      String
+  quantity        Int
+  deliveryPincode String
+  status          CheckoutStatus @default(RESERVED)
+  idempotencyKey  String         @unique
+  payloadHash     String
+  expiresAt       DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  product         Product        @relation(fields: [productId], references: [id])
+  location        Location       @relation(fields: [locationId], references: [id])
+
+  @@index([status, expiresAt])
+  @@index([productId])
+}

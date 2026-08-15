@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: keystone
+      POSTGRES_PASSWORD: keystone
+      POSTGRES_DB: keystone
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keystone -d keystone"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5566:5566"
+    environment:
+      DATABASE_URL: postgresql://keystone:keystone@db:5432/keystone
+      PORT: 5566
+      CHECKOUT_RETRY_WINDOW_MINUTES: 15
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
