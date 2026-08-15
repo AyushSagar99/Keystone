@@ -144,4 +144,13 @@ export const api = {
 
   expireAbandoned: () =>
     request<ExpireResult>('/checkouts/expire', { method: 'POST' }),
+
+  getCheckout: (checkoutId: string) =>
+    request<Checkout>(`/checkouts/${checkoutId}`),
+
+  seedScenario: () =>
+    request<{
+      product: Product;
+      locations: Location[];
+    }>('/demo/seed', { method: 'POST' }),
 };

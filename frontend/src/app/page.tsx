@@ -14,6 +14,11 @@ import {
   InventoryRow,
   Product,
 } from '@/lib/api';
+import {
+  clearSessionCheckouts,
+  loadSessionCheckouts,
+  saveSessionCheckouts,
+} from '@/lib/checkout-session';
 import { seedDemoData } from '@/lib/seed';
 import { Bell, Search } from 'lucide-react';
 
@@ -26,6 +31,7 @@ export default function Home() {
   const [quantity, setQuantity] = useState(2);
   const [pincode, setPincode] = useState('110001');
   const [sessionCheckouts, setSessionCheckouts] = useState<Checkout[]>([]);
+  const [sessionReady, setSessionReady] = useState(false);
   const [availability, setAvailability] = useState<Availability | null>(null);
   const [inventory, setInventory] = useState<InventoryRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,6 +73,36 @@ export default function Home() {
   }, [loadProducts]);
 
   useEffect(() => {
+    async function restoreSession() {
+      const stored = loadSessionCheckouts();
+      if (stored.length === 0) {
+        setSessionReady(true);
+        return;
+      }
+
+      const refreshed = await Promise.all(
+        stored.map(async (checkout) => {
+          try {
+            return await api.getCheckout(checkout.id);
+          } catch {
+            return checkout;
+          }
+        }),
+      );
+
+      setSessionCheckouts(refreshed);
+      setSessionReady(true);
+    }
+
+    restoreSession().catch((err: Error) => setError(err.message));
+  }, []);
+
+  useEffect(() => {
+    if (!sessionReady) return;
+    saveSessionCheckouts(sessionCheckouts);
+  }, [sessionCheckouts, sessionReady]);
+
+  useEffect(() => {
     if (selectedProductId) {
       refreshData(selectedProductId).catch((err: Error) =>
         setError(err.message),
@@ -103,6 +139,7 @@ export default function Home() {
       const result = await seedDemoData();
       setSelectedProductId(result.product.id);
       setSessionCheckouts([]);
+      clearSessionCheckouts();
       setToast(`Seeded ${result.product.name} across 3 warehouses`);
       await refreshData(result.product.id);
       setProducts(await api.listProducts());
