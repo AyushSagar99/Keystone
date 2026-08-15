@@ -137,11 +137,14 @@ export default function Home() {
   async function handleSeed() {
     await runAction(async () => {
       const result = await seedDemoData();
-      setSelectedProductId(result.product.id);
+      const [firstProduct] = result.products;
+      setSelectedProductId(firstProduct.id);
       setSessionCheckouts([]);
       clearSessionCheckouts();
-      setToast(`Seeded ${result.product.name} across 3 warehouses`);
-      await refreshData(result.product.id);
+      setToast(
+        `Seeded ${result.products.map((p) => p.name).join(' & ')} across 3 warehouses`,
+      );
+      await refreshData(firstProduct.id);
       setProducts(await api.listProducts());
     });
   }

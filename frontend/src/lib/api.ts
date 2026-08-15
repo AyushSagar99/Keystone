@@ -150,7 +150,7 @@ export const api = {
 
   seedScenario: () =>
     request<{
-      product: Product;
+      products: Product[];
       locations: Location[];
     }>('/demo/seed', { method: 'POST' }),
 };

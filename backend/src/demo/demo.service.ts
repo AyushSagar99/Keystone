@@ -11,8 +11,12 @@ export class DemoService {
     await this.prisma.product.deleteMany();
     await this.prisma.location.deleteMany();
 
-    const product = await this.prisma.product.create({
+    const widget = await this.prisma.product.create({
       data: { name: 'Widget', sku: 'WID-DEMO' },
+    });
+
+    const gadget = await this.prisma.product.create({
+      data: { name: 'Gadget', sku: 'GAD-DEMO' },
     });
 
     const delhi = await this.prisma.location.create({
@@ -47,14 +51,17 @@ export class DemoService {
 
     await this.prisma.inventory.createMany({
       data: [
-        { productId: product.id, locationId: delhi.id, stock: 10, reserved: 0 },
-        { productId: product.id, locationId: noida.id, stock: 8, reserved: 0 },
-        { productId: product.id, locationId: mumbai.id, stock: 5, reserved: 0 },
+        { productId: widget.id, locationId: delhi.id, stock: 10, reserved: 0 },
+        { productId: widget.id, locationId: noida.id, stock: 8, reserved: 0 },
+        { productId: widget.id, locationId: mumbai.id, stock: 5, reserved: 0 },
+        { productId: gadget.id, locationId: delhi.id, stock: 6, reserved: 0 },
+        { productId: gadget.id, locationId: noida.id, stock: 4, reserved: 0 },
+        { productId: gadget.id, locationId: mumbai.id, stock: 3, reserved: 0 },
       ],
     });
 
     return {
-      product,
+      products: [widget, gadget],
       locations: [delhi, noida, mumbai],
     };
   }
